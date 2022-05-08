@@ -71,3 +71,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+<!-- PostgreSQL -->
+
+数据库事务象征着在数据库管理系统中执行的一个工作单元。事务是独立于其他事务完成多项任务的可靠方式。
