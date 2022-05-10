@@ -1,11 +1,12 @@
 import * as Joi from "@hapi/joi";
-import { Module } from "@nestjs/common";
+import { Module, ValidationPipe } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { CoffeesModule } from "./coffees/coffees.module";
 import { ConfigModule } from "@nestjs/config";
 import appConfig from "./config/app.config";
+import { APP_PIPE } from "@nestjs/core";
 
 // TypeOrmModule.forRootAsync 与TypeOrmModule.forRoot
 @Module({
@@ -33,6 +34,9 @@ import appConfig from "./config/app.config";
     CoffeesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_PIPE,
+    useClass: ValidationPipe
+  }],
 })
 export class AppModule {}
