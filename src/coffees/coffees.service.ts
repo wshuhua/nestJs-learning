@@ -8,20 +8,47 @@ import { Flavor } from "./entities/flavor.entity";
 import { PaginationQueryDto } from "./../common/dto/pagination-query.dto";
 import { Event } from '../events/entities/event.entity'
 import { ConfigService } from "@nestjs/config";
+import coffeesConfig from "./config/coffees.config";
 
 
 @Injectable()
 export class CoffeesService {
+  // constructor(
+  //   @InjectRepository(Coffee)
+  //   private readonly coffeeRepository: Repository<Coffee>,
+  //   @InjectRepository(Flavor)
+  //   private readonly flavorRepository: Repository<Flavor>,
+  //   private readonly connection: Connection,
+  //   private readonly configService: ConfigService
+  // ) {
+  //   // configService.get方法是应用程序注册的各种配置属性的通用方法
+  //   // 在获取.env或者在单个服务中一次与许多不同的配置对象交互时，它会派上用场。
+  //   // 缺点： 检索嵌套属性时，没有完全的类型安全性。对于测试也更加困难
+
+  //   // 1. 方式1
+  //   // const databasePort = this.configService.get<string>('DATABASE_PORT');
+  //   // console.log(databasePort, 'databasePost ')
+     
+  //   // 2. 方式2
+  //   const databaseHost = this.configService.get('database.host');
+  //   console.log(databaseHost, 'databaseHost ')
+
+  //   // 3. 方式3
+  //   const coffees = this.configService.get('coffees')
+  //   console.log(coffees)
+  // }
+
   constructor(
     @InjectRepository(Coffee)
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: Connection,
-    private readonly configService: ConfigService
+    // 直接注入整个命名空间配置对象，每个命名空间配置都暴露了一个“key”属性，我们可以使用该属性将整个对象注入到在Nest容器中注册的任何类。
+    @Inject(coffeesConfig.KEY)
+    private readonly coffeesconfiguration: ConfigService<typeof coffeesConfig>
   ) {
-    const databaseHost = this.configService.get<string>('DATABASE_HOST');
-    console.log(databaseHost, 'databaseHost ')
+    console.log(coffeesconfiguration)
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
